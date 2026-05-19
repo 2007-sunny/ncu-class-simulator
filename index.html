@@ -8,77 +8,93 @@
     <style>
         :root { --ncu-blue: #00457c; --ncu-red: #d32f2f; --ncu-green: #2e7d32; }
         body { font-family: "Microsoft JhengHei", sans-serif; margin: 20px; background-color: #f4f4f9; color: #333; }
-        h2 { color: var(--ncu-blue); border-bottom: 2px solid var(--ncu-blue); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; }
+        
+        /* 頂部標題 */
+        h2 { color: var(--ncu-blue); border-bottom: 2px solid var(--ncu-blue); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 10px; }
         
         /* 頁籤切換 */
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { padding: 10px 20px; border: none; font-size: 1rem; cursor: pointer; border-radius: 5px; font-weight: bold; background: #ddd; transition: 0.3s; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 10px 20px; border: none; font-size: 1rem; cursor: pointer; border-radius: 5px; font-weight: bold; background: #ddd; transition: 0.3s; flex: 1; text-align: center; }
         .tab-btn.active { background: var(--ncu-blue); color: white; }
         
         /* 搜尋區塊 */
         .search-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; align-items: flex-end; }
-        .search-group { display: flex; flex-direction: column; }
+        .search-group { display: flex; flex-direction: column; flex: 1; min-width: 120px; }
         label { font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #666; }
-        select, input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; min-width: 120px; }
+        select, input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; width: 100%; box-sizing: border-box; }
         
-        /* 表格與按鈕 */
+        /* 表格共用設定 */
         .table-container { overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
         th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background-color: var(--ncu-blue); color: white; position: sticky; top: 0; cursor: pointer; user-select: none; }
+        th { background-color: var(--ncu-blue); color: white; position: sticky; top: 0; cursor: pointer; user-select: none; white-space: nowrap; }
         tr:hover { background-color: #f1f7ff; }
         
-        .action-btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        /* 按鈕樣式 */
+        .action-btn { padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .action-btn:hover { opacity: 0.8; }
         .add-btn { background-color: var(--ncu-green); color: white; }
         .del-btn { background-color: var(--ncu-red); color: white; }
-        .added-tag { color: #888; font-style: italic; }
+        .added-tag { color: #888; font-style: italic; white-space: nowrap; }
         
-        /* 衝堂警告 */
         .conflict-row { background-color: #ffebee !important; }
-        .conflict-text { color: var(--ncu-red); font-weight: bold; font-size: 0.85rem; }
+        .conflict-text { color: var(--ncu-red); font-weight: bold; font-size: 0.85rem; white-space: nowrap; }
         
-        /* 🎓 畢業門檻儀表板樣式 */
-        .grad-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .grad-card { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid var(--ncu-blue); }
-        .grad-card h4 { margin: 0 0 10px 0; font-size: 0.9rem; color: #666; }
-        .progress-container { background: #eee; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 5px; }
+        /* 畢業門檻儀表板 */
+        .grad-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .grad-card { background: #fff; padding: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid var(--ncu-blue); }
+        .grad-card h4 { margin: 0 0 8px 0; font-size: 0.85rem; color: #666; }
+        .progress-container { background: #eee; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
         .progress-bar { background: var(--ncu-blue); height: 100%; width: 0%; transition: width 0.5s ease; }
-        .progress-text { font-size: 0.8rem; font-weight: bold; display: flex; justify-content: space-between; }
+        .progress-text { font-size: 0.75rem; font-weight: bold; display: flex; justify-content: space-between; }
         .status-pass { color: var(--ncu-green); }
         .status-fail { color: var(--ncu-red); }
-        .stream-selector { background: #eef2f7; padding: 10px 15px; border-radius: 5px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+        .stream-selector { background: #eef2f7; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 0.9rem; }
         
-        /* 🖼️ 視覺化課表彈出視窗樣式 */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 95%; max-width: 1000px; max-height: 95vh; overflow-y: auto; position: relative; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #666; font-weight: bold; }
-        .timetable-grid { width: 100%; border-collapse: collapse; text-align: center; table-layout: fixed; min-width: 700px; }
-        .timetable-grid th, .timetable-grid td { border: 1px solid #ddd; padding: 5px; vertical-align: middle; height: 60px; }
-        .timetable-grid th { background: #f0f4f8; color: var(--ncu-blue); height: 40px; }
-        .time-cell { font-size: 0.75rem; color: #777; }
-        .course-block { border-radius: 6px; padding: 5px; font-size: 0.85rem; color: white; margin: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); line-height: 1.2; word-break: break-all; }
-        .course-block small { font-size: 0.75rem; opacity: 0.9; }
+        /* 📅 課表模式樣式 */
+        .view-toggle { display: flex; gap: 10px; margin-bottom: 15px; }
+        .timetable-capture-area { background: white; padding: 15px; border-radius: 8px; overflow-x: auto; }
+        .timetable-grid { width: 100%; border-collapse: collapse; text-align: center; table-layout: fixed; min-width: 600px; }
+        .timetable-grid th, .timetable-grid td { border: 1px solid #ddd; padding: 4px; vertical-align: middle; height: 50px; }
+        .timetable-grid th { background: #f0f4f8; color: var(--ncu-blue); height: 35px; font-size: 0.9rem; }
+        .time-cell { font-size: 0.7rem; color: #777; }
+        .course-block { border-radius: 6px; padding: 5px; font-size: 0.8rem; color: white; margin: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.15); line-height: 1.2; word-break: break-all; }
+        .course-block small { font-size: 0.7rem; opacity: 0.9; }
 
-        /* 隱藏區塊 */
         .hidden { display: none !important; }
+
+        /* 📱 手機版適配 (RWD) */
+        @media (max-width: 768px) {
+            body { margin: 10px; }
+            h2 { font-size: 1.2rem; }
+            .search-group { min-width: 100%; } /* 搜尋欄位滿版排列 */
+            .tabs { flex-direction: row; }
+            .tab-btn { font-size: 0.9rem; padding: 8px; }
+            .action-btn { width: 100%; margin-top: 5px; } /* 按鈕滿版 */
+            .btn-group { display: flex; flex-direction: column; width: 100%; gap: 5px; }
+            
+            /* 表格文字縮小 */
+            th, td { padding: 8px; font-size: 0.9rem; }
+            .grad-dashboard { grid-template-columns: 1fr 1fr; } /* 進度條變兩排 */
+        }
     </style>
 </head>
 <body>
 
     <h2>
-        🎓 NCU 物理系選課模擬系統 
-        <span style="font-size: 1rem; color: #666;">
-            學期切換：
-            <select id="semesterSelect" onchange="changeSemester()">
-                <option value="1151">115-1 學期</option>
-                <option value="1142">114-2 學期</option>
+        🎓 NCU 物理系選課系統 
+        <span style="font-size: 0.9rem; color: #666; font-weight: normal;">
+            學期：
+            <select id="semesterSelect" onchange="changeSemester()" style="width: auto; padding: 4px;">
+                <option value="1151">115-1</option>
+                <option value="1142">114-2</option>
             </select>
         </span>
     </h2>
 
     <div class="tabs">
         <button class="tab-btn active" id="tabSearch" onclick="switchTab('search')">🔍 課程搜尋</button>
-        <button class="tab-btn" id="tabCart" onclick="switchTab('cart')">🛒 我的預排課表 (<span id="cartCount">0</span>)</button>
+        <button class="tab-btn" id="tabCart" onclick="switchTab('cart')">🛒 我的課表 (<span id="cartCount">0</span>)</button>
     </div>
 
     <div id="searchSection">
@@ -97,7 +113,6 @@
                         <th onclick="sortBy('name')">課程名稱</th>
                         <th onclick="sortBy('teacher')">教師</th>
                         <th onclick="sortBy('sort_key')">時間</th>
-                        <th>地點</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -135,70 +150,66 @@
                 <div class="progress-container"><div id="bar-cross" class="progress-bar" style="background: #7b1fa2;"></div></div>
                 <div class="progress-text"><span id="txt-cross">0/6</span> <span id="stat-cross"></span></div>
             </div>
-            <div class="grad-card">
-                <h4>通識/共同 (25)</h4>
-                <div class="progress-container"><div id="bar-common" class="progress-bar" style="background: #f57c00;"></div></div>
-                <div class="progress-text"><span id="txt-common">0/25</span> <span id="stat-common"></span></div>
-            </div>
         </div>
 
         <div class="search-box" style="justify-content: space-between; align-items: center; padding: 15px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <h3 style="margin: 0; color: var(--ncu-blue);">已選課程清單</h3>
-                <select id="cartSemesterSelect" onchange="updateCartUI()" style="padding: 4px; font-size: 0.9rem;">
-                    <option value="all">顯示全部學期</option>
-                    <option value="1142">僅顯示 114-2</option>
-                    <option value="1151">僅顯示 115-1</option>
-                </select>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <select id="cartSemesterSelect" onchange="updateCartUI()" style="padding: 4px; font-size: 0.9rem; width: auto;">
+                        <option value="all">顯示全部學期</option>
+                        <option value="1142">僅顯示 114-2</option>
+                        <option value="1151">僅顯示 115-1</option>
+                    </select>
+                    <strong style="white-space: nowrap;">顯示學分：<span id="totalCredits" style="color: var(--ncu-red); font-size: 1.2rem;">0</span></strong>
+                </div>
+                <div class="view-toggle">
+                    <button id="btnListView" class="tab-btn active" onclick="setCartView('list')" style="padding: 6px 12px;">📝 條列</button>
+                    <button id="btnGridView" class="tab-btn" onclick="setCartView('grid')" style="padding: 6px 12px;">📅 課表</button>
+                </div>
             </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
-                <strong style="margin-right: 10px;">顯示學分：<span id="totalCredits" style="color: var(--ncu-red); font-size: 1.2rem;">0</span></strong>
-                <button onclick="clearCart()" class="action-btn" style="background: #ddd; color: #333;">清空顯示課表</button>
+            
+            <div class="btn-group" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;">
+                <button onclick="clearCart()" class="action-btn" style="background: #ddd; color: #333;">清空</button>
                 <button onclick="exportCart()" class="action-btn" style="background: var(--ncu-blue); color: white;">📤 匯出代碼</button>
                 <button onclick="importCart()" class="action-btn" style="background: #f57c00; color: white;">📥 匯入代碼</button>
-                <button onclick="openTimetable()" class="action-btn" style="background: #9c27b0; color: white;">🖼️ 輸出課表圖片</button>
+                <button onclick="downloadTimetableImage()" class="action-btn" style="background: #9c27b0; color: white;" id="btnDownloadImg">🖼️ 下載圖片</button>
             </div>
         </div>
 
-        <div class="table-container">
+        <div id="cartListView" class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>課號-班別</th><th>課程名稱</th><th>教師</th><th>學分</th><th>時間</th><th>狀態</th><th>操作</th>
+                        <th>課號-班別</th><th>課程名稱</th><th>學分</th><th>時間</th><th>狀態</th><th>操作</th>
                     </tr>
                 </thead>
                 <tbody id="cartTableBody"></tbody>
             </table>
         </div>
-    </div>
 
-    <div id="timetableModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeTimetable()">&times;</span>
-            <div id="timetableCaptureArea" style="background: white; padding: 25px; border-radius: 8px;">
-                <h2 style="text-align: center; color: var(--ncu-blue); margin-top: 0;">📅 我的專屬課表 <span id="timetableSemesterTitle" style="font-size: 1.2rem; color: #666;"></span></h2>
-                <div class="table-container">
-                    <table class="timetable-grid">
-                        <thead>
-                            <tr>
-                                <th style="width: 12%;">節次 / 時間</th>
-                                <th style="width: 17.6%;">星期一</th>
-                                <th style="width: 17.6%;">星期二</th>
-                                <th style="width: 17.6%;">星期三</th>
-                                <th style="width: 17.6%;">星期四</th>
-                                <th style="width: 17.6%;">星期五</th>
-                            </tr>
-                        </thead>
-                        <tbody id="timetableGridBody">
-                            </tbody>
-                    </table>
-                </div>
-                <p style="text-align: right; color: #999; font-size: 0.8rem; margin-bottom: 0;">Generated by NCU Physics Simulator</p>
-            </div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button onclick="downloadTimetableImage()" class="action-btn add-btn" style="font-size: 1.1rem; padding: 10px 25px;">⬇️ 下載為圖片 (PNG)</button>
+        <div id="cartGridView" class="hidden">
+            <div id="timetableCaptureArea" class="timetable-capture-area">
+                <h3 style="text-align: center; color: var(--ncu-blue); margin-top: 0; margin-bottom: 10px;">
+                    📅 我的專屬課表 <span id="timetableSemesterTitle" style="font-size: 1rem; color: #666;"></span>
+                </h3>
+                <table class="timetable-grid">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">時間</th>
+                            <th style="width: 17%;">一</th>
+                            <th style="width: 17%;">二</th>
+                            <th style="width: 17%;">三</th>
+                            <th style="width: 17%;">四</th>
+                            <th style="width: 17%;">五</th>
+                        </tr>
+                    </thead>
+                    <tbody id="timetableGridBody">
+                        </tbody>
+                </table>
+                <p style="text-align: right; color: #999; font-size: 0.75rem; margin-bottom: 0;">Generated by NCU Physics Simulator</p>
             </div>
         </div>
+
     </div>
 
     <script src="course_1142.js"></script>
@@ -210,6 +221,7 @@
         let currentData = []; 
         let sortCol = 'sort_key'; sortAsc = true;
         let myCart = JSON.parse(localStorage.getItem('ncu_cart')) || [];
+        let currentCartView = 'list'; // 紀錄目前是清單還是課表模式
 
         function initData() {
             if (window.NCU_COURSES && window.NCU_COURSES[currentSemester]) {
@@ -227,14 +239,11 @@
             document.getElementById('deptSelect').innerHTML = '<option value="">所有</option>';
             document.getElementById('daySelect').innerHTML = '<option value="">不限</option>';
             
-            const deptMap = {
-                "LN": "語言中心", "GS": "通識教育中心", "MA": "數學系", "PH": "物理學系",
-                "OS": "光電科學與工程學系", "ME": "機械工程學系", "EE": "電機工程學系", "CE": "資訊工程學系"
-            };
+            const deptMap = { "LN": "語言", "GS": "通識", "MA": "數學", "PH": "物理", "OS": "光電", "ME": "機械", "EE": "電機", "CE": "資工" };
 
             const depts = [...new Set(courses.map(c => c.id.substring(0, 2)))].sort();
             depts.forEach(d => {
-                const displayName = deptMap[d] ? `${deptMap[d]} (${d})` : d;
+                const displayName = deptMap[d] ? `${deptMap[d]}(${d})` : d;
                 document.getElementById('deptSelect').add(new Option(displayName, d));
             });
             const days = ["一", "二", "三", "四", "五", "六", "日"];
@@ -250,15 +259,15 @@
                     : `<button class="action-btn add-btn" onclick="addToCart('${c.id}')">+ 加入</button>`;
                 
                 return `<tr>
-                    <td style="font-family: monospace;"><b>${c.id}</b></td>
+                    <td style="font-family: monospace; font-size:0.9em;"><b>${c.id}</b></td>
                     <td>${c.name}</td><td>${c.teacher}</td>
-                    <td style="color: var(--ncu-red); font-weight: bold;">${c.time}</td><td>${c.location}</td>
+                    <td style="color: var(--ncu-red); font-weight: bold; font-size:0.9em;">${c.time}<br><span style="color:#666;font-size:0.8em;font-weight:normal;">${c.location}</span></td>
                     <td>${btnHtml}</td>
                 </tr>`;
-            }).join('') : '<tr><td colspan="6" class="no-data">查無資料</td></tr>';
+            }).join('') : '<tr><td colspan="5" class="no-data">查無資料</td></tr>';
         }
 
-        // --- 購物車與衝堂邏輯 ---
+        // --- 購物車核心 ---
         function addToCart(id) {
             const course = courses.find(c => c.id === id);
             if(course && !myCart.some(c => c.id === id)) {
@@ -268,19 +277,15 @@
             }
         }
 
-        function removeFromCart(id) {
-            myCart = myCart.filter(c => c.id !== id);
-            saveCart();
-        }
+        function removeFromCart(id) { myCart = myCart.filter(c => c.id !== id); saveCart(); }
 
         function clearCart() {
             const showSem = document.getElementById('cartSemesterSelect').value;
             if (showSem === "all") {
-                if(confirm("確定要清空【所有學期】的預排課表嗎？")) { myCart = []; saveCart(); }
+                if(confirm("確定清空【所有學期】的課表？")) { myCart = []; saveCart(); }
             } else {
-                if(confirm(`確定要清空【${showSem}】學期的預排課表嗎？`)) { 
-                    myCart = myCart.filter(c => c.semester !== showSem); 
-                    saveCart(); 
+                if(confirm(`確定清空【${showSem}】學期的課表？`)) { 
+                    myCart = myCart.filter(c => c.semester !== showSem); saveCart(); 
                 }
             }
         }
@@ -288,26 +293,19 @@
         function saveCart() {
             localStorage.setItem('ncu_cart', JSON.stringify(myCart));
             updateCartUI();
-            if(!document.getElementById('searchSection').classList.contains('hidden')) {
-                renderSearchTable(currentData);
-            }
+            if(!document.getElementById('searchSection').classList.contains('hidden')) renderSearchTable(currentData);
         }
 
         function updateCartUI() {
             myCart.forEach(c => { if (!c.semester) c.semester = "1142"; });
-
-            const cartSemSelect = document.getElementById('cartSemesterSelect');
-            const showSem = cartSemSelect ? cartSemSelect.value : "all";
-
-            let displayCart = myCart;
-            if (showSem !== "all") displayCart = myCart.filter(c => c.semester === showSem);
+            const showSem = document.getElementById('cartSemesterSelect').value;
+            const displayCart = showSem === "all" ? myCart : myCart.filter(c => c.semester === showSem);
 
             document.getElementById('cartCount').innerText = myCart.length;
-            const total = displayCart.reduce((sum, c) => sum + c.credit, 0);
-            document.getElementById('totalCredits').innerText = total;
+            document.getElementById('totalCredits').innerText = displayCart.reduce((sum, c) => sum + c.credit, 0);
 
+            // 渲染條列模式
             displayCart.sort((a, b) => a.sort_key - b.sort_key);
-
             const tbody = document.getElementById('cartTableBody');
             tbody.innerHTML = displayCart.length ? displayCart.map(c => {
                 let isConflict = false;
@@ -327,24 +325,22 @@
                         });
                     });
                 });
-
-                const rowClass = isConflict ? 'conflict-row' : '';
-                const statusHtml = isConflict ? '<span class="conflict-text">⚠️ 衝堂</span>' : '<span style="color: green;">✅ 正常</span>';
-                const semTag = showSem === "all" ? `<span style="font-size:0.8em; color:#888;">[${c.semester}]</span> ` : '';
-
-                return `<tr class="${rowClass}">
-                    <td style="font-family: monospace;"><b>${semTag}${c.id}</b></td>
-                    <td>${c.name}</td><td>${c.teacher}</td><td>${c.credit}</td>
-                    <td style="font-weight: bold;">${c.time}</td>
-                    <td>${statusHtml}</td>
-                    <td><button class="action-btn del-btn" onclick="removeFromCart('${c.id}')">🗑️ 移除</button></td>
+                const semTag = showSem === "all" ? `<span style="font-size:0.75em; color:#888;">[${c.semester}]</span> ` : '';
+                return `<tr class="${isConflict ? 'conflict-row' : ''}">
+                    <td style="font-family: monospace; font-size:0.9em;"><b>${semTag}${c.id}</b></td>
+                    <td>${c.name}</td><td>${c.credit}</td>
+                    <td style="font-weight: bold; font-size:0.9em;">${c.time}</td>
+                    <td>${isConflict ? '<span class="conflict-text">⚠️ 衝堂</span>' : '<span style="color: green;">✅</span>'}</td>
+                    <td><button class="action-btn del-btn" onclick="removeFromCart('${c.id}')">移除</button></td>
                 </tr>`;
-            }).join('') : '<tr><td colspan="7" class="no-data">課表空空的，快去加課吧！</td></tr>';
+            }).join('') : '<tr><td colspan="6" class="no-data" style="text-align:center;">課表是空的！</td></tr>';
 
+            // 同步渲染課表模式
+            renderGridTimetable(displayCart, showSem);
             updateGraduationProgress();
         }
 
-        // --- 🎓 畢業門檻計算邏輯 ---
+        // --- 🎓 畢業門檻 ---
         function updateGraduationProgress() {
             const stream = document.querySelector('input[name="stream"]:checked').value;
             const deptElectiveReq = (stream === 'A') ? 15 : 9;
@@ -362,22 +358,18 @@
                 else credits.cross += credit;
             });
 
-            updateCard('total', credits.total, 128);
-            updateCard('dept-comp', credits.deptComp, 58);
-            updateCard('common', credits.common, 25);
-            updateCard('dept-elec', credits.deptElec, deptElectiveReq);
+            updateCard('total', credits.total, 128); updateCard('dept-comp', credits.deptComp, 58);
+            updateCard('common', credits.common, 25); updateCard('dept-elec', credits.deptElec, deptElectiveReq);
             updateCard('cross', credits.cross, 6);
         }
 
         function updateCard(id, current, target) {
-            const percent = Math.min((current / target) * 100, 100);
-            document.getElementById(`bar-${id}`).style.width = percent + '%';
+            document.getElementById(`bar-${id}`).style.width = Math.min((current / target) * 100, 100) + '%';
             document.getElementById(`txt-${id}`).innerText = `${current}/${target}`;
-            const statusEl = document.getElementById(`stat-${id}`);
-            statusEl.innerHTML = current >= target ? '<span class="status-pass">已達標 ✔️</span>' : `<span class="status-fail">還差 ${Math.max(target - current, 0)}</span>`;
+            document.getElementById(`stat-${id}`).innerHTML = current >= target ? '<span class="status-pass">✔️</span>' : `<span class="status-fail">差 ${Math.max(target - current, 0)}</span>`;
         }
 
-        // --- 介面切換 ---
+        // --- 介面與檢視模式切換 ---
         function switchTab(tab) {
             document.getElementById('tabSearch').classList.toggle('active', tab === 'search');
             document.getElementById('tabCart').classList.toggle('active', tab === 'cart');
@@ -386,27 +378,28 @@
             if(tab === 'cart') updateCartUI();
         }
 
+        function setCartView(view) {
+            currentCartView = view;
+            document.getElementById('btnListView').classList.toggle('active', view === 'list');
+            document.getElementById('btnGridView').classList.toggle('active', view === 'grid');
+            document.getElementById('cartListView').classList.toggle('hidden', view !== 'list');
+            document.getElementById('cartGridView').classList.toggle('hidden', view !== 'grid');
+        }
+
+        // --- 搜尋過濾 ---
         function filter() {
             const dept = document.getElementById('deptSelect').value.toLowerCase();
             const name = document.getElementById('nameInput').value.toLowerCase();
             const day = document.getElementById('daySelect').value;
             const loc = document.getElementById('locInput').value.toLowerCase();
-
-            currentData = courses.filter(c => 
-                (c.id.toLowerCase().startsWith(dept) || dept === '') &&
-                (c.name.toLowerCase().includes(name) || name === '') &&
-                (c.time.includes(day) || day === '') &&
-                (c.location.toLowerCase().includes(loc) || loc === '')
-            );
+            currentData = courses.filter(c => (c.id.toLowerCase().startsWith(dept) || dept === '') && (c.name.toLowerCase().includes(name) || name === '') && (c.time.includes(day) || day === '') && (c.location.toLowerCase().includes(loc) || loc === ''));
             applySort();
         }
-
         function sortBy(col) { if (sortCol === col) sortAsc = !sortAsc; else { sortCol = col; sortAsc = true; } applySort(); }
         function applySort() {
             currentData.sort((a, b) => { let valA = a[sortCol]; let valB = b[sortCol]; return valA < valB ? (sortAsc ? -1 : 1) : (valA > valB ? (sortAsc ? 1 : -1) : 0); });
             renderSearchTable(currentData);
         }
-
         function changeSemester() {
             currentSemester = document.getElementById('semesterSelect').value;
             const cartSemSelect = document.getElementById('cartSemesterSelect');
@@ -414,109 +407,79 @@
             initData();
         }
 
+        // --- 匯出/匯入 ---
         function exportCart() {
-            if (myCart.length === 0) { alert("課表是空的，先去選幾堂課吧！"); return; }
-            const cartData = myCart.map(c => ({ id: c.id, sem: c.semester }));
-            const code = btoa(JSON.stringify(cartData)); 
-            prompt("請複製以下你的專屬課表代碼，傳給朋友或在手機上匯入：", code);
+            if (myCart.length === 0) { alert("課表是空的！"); return; }
+            prompt("請複製代碼傳給朋友或在手機上匯入：", btoa(JSON.stringify(myCart.map(c => ({ id: c.id, sem: c.semester })))));
         }
-
         function importCart() {
-            const code = prompt("請貼上課表代碼：");
-            if (!code) return;
+            const code = prompt("請貼上代碼："); if (!code) return;
             try {
                 const cartData = JSON.parse(atob(code));
                 let newCart = [];
                 if (cartData.length > 0 && typeof cartData[0] === 'string') {
-                    newCart = cartData.map(id => {
-                        const c = courses.find(c => c.id === id);
-                        return c ? { ...c, semester: currentSemester } : null;
-                    }).filter(c => c !== null);
+                    newCart = cartData.map(id => { const c = courses.find(c => c.id === id); return c ? { ...c, semester: currentSemester } : null; }).filter(c => c !== null);
                 } else {
-                    newCart = cartData.map(data => {
-                        const semCourses = window.NCU_COURSES[data.sem] || [];
-                        const c = semCourses.find(c => c.id === data.id);
-                        return c ? { ...c, semester: data.sem } : null;
-                    }).filter(c => c !== null);
+                    newCart = cartData.map(data => { const semCourses = window.NCU_COURSES[data.sem] || []; const c = semCourses.find(c => c.id === data.id); return c ? { ...c, semester: data.sem } : null; }).filter(c => c !== null);
                 }
-                if (newCart.length > 0) { myCart = newCart; saveCart(); alert(`✅ 成功匯入 ${newCart.length} 堂課！`); }
-                else { alert("找不到對應的課程，可能是代碼錯誤或學期不同。"); }
-            } catch (e) { alert("❌ 無效的代碼格式！"); }
+                if (newCart.length > 0) { myCart = newCart; saveCart(); alert(`✅ 成功匯入 ${newCart.length} 堂課！`); } else { alert("找不到對應課程。"); }
+            } catch (e) { alert("❌ 代碼格式錯誤！"); }
         }
 
-        // --- 🖼️ 產生視覺化課表圖片功能 ---
+        // --- 📅 網頁內嵌課表渲染與截圖 ---
         const ncuPeriods = [
-            { id: '1', time: '08:00 - 08:50' }, { id: '2', time: '09:00 - 09:50' }, { id: '3', time: '10:00 - 10:50' },
-            { id: '4', time: '11:00 - 11:50' }, { id: 'Z', time: '12:00 - 12:50' }, { id: '5', time: '13:00 - 13:50' },
-            { id: '6', time: '14:00 - 14:50' }, { id: '7', time: '15:00 - 15:50' }, { id: '8', time: '16:00 - 16:50' },
-            { id: '9', time: '17:00 - 17:50' }, { id: 'A', time: '18:00 - 18:50' }, { id: 'B', time: '19:00 - 19:50' },
-            { id: 'C', time: '20:00 - 20:50' }
+            { id: '1', time: '08:00' }, { id: '2', time: '09:00' }, { id: '3', time: '10:00' },
+            { id: '4', time: '11:00' }, { id: 'Z', time: '12:00' }, { id: '5', time: '13:00' },
+            { id: '6', time: '14:00' }, { id: '7', time: '15:00' }, { id: '8', time: '16:00' },
+            { id: '9', time: '17:00' }, { id: 'A', time: '18:00' }, { id: 'B', time: '19:00' }, { id: 'C', time: '20:00' }
         ];
-        const daysMap = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5 };
-        const colorPalette = ['#e57373', '#f06292', '#ba68c8', '#7986cb', '#64b5f6', '#4dd0e1', '#4db6ac', '#81c784', '#aed581', '#ffb74d', '#ff8a65'];
+        const colorPalette = ['#e57373', '#f06292', '#ba68c8', '#7986cb', '#64b5f6', '#4dd0e1', '#4db6ac', '#81c784', '#aed581', '#ffb74d'];
 
-        function openTimetable() {
-            const showSem = document.getElementById('cartSemesterSelect').value;
-            let displayCart = showSem === "all" ? myCart : myCart.filter(c => c.semester === showSem);
-            
-            if (displayCart.length === 0) { alert("目前顯示的課表是空的喔！"); return; }
-            
-            document.getElementById('timetableSemesterTitle').innerText = showSem === "all" ? "(所有學期)" : `(${showSem} 學期)`;
-
+        function renderGridTimetable(displayCart, showSem) {
+            document.getElementById('timetableSemesterTitle').innerText = showSem === "all" ? "(所有學期)" : `(${showSem})`;
             const tbody = document.getElementById('timetableGridBody');
             tbody.innerHTML = '';
-
-            // 建立 13節 x 5天 的空矩陣
+            
             let matrix = {};
             ncuPeriods.forEach(p => { matrix[p.id] = { 1:[], 2:[], 3:[], 4:[], 5:[] }; });
 
-            // 將課程塞入矩陣
             displayCart.forEach((c, index) => {
                 const color = colorPalette[index % colorPalette.length];
                 const rawTimes = Array.isArray(c.raw_time) ? c.raw_time : [c.raw_time];
-                
                 rawTimes.forEach(rt => {
                     if(!rt || rt === "未定") return;
-                    const dayCol = daysMap[rt[0]];
-                    if(!dayCol) return; // 忽略六日或錯誤資料
-                    
-                    const periods = rt.slice(1).split('');
-                    periods.forEach(p => {
-                        if (matrix[p] && matrix[p][dayCol]) {
-                            matrix[p][dayCol].push({ name: c.name, loc: c.location, color: color });
-                        }
+                    const dayCol = { '一':1, '二':2, '三':3, '四':4, '五':5 }[rt[0]];
+                    if(!dayCol) return;
+                    rt.slice(1).split('').forEach(p => {
+                        if (matrix[p] && matrix[p][dayCol]) matrix[p][dayCol].push({ name: c.name, loc: c.location, color: color });
                     });
                 });
             });
 
-            // 畫出表格列
             ncuPeriods.forEach(p => {
                 let rowHtml = `<tr><td><b>${p.id}</b><br><span class="time-cell">${p.time}</span></td>`;
                 for(let d=1; d<=5; d++) {
-                    const cellCourses = matrix[p.id][d];
-                    let cellHtml = '';
-                    cellCourses.forEach(cc => {
-                        cellHtml += `<div class="course-block" style="background:${cc.color};">${cc.name}<br><small>${cc.loc}</small></div>`;
-                    });
+                    let cellHtml = matrix[p.id][d].map(cc => `<div class="course-block" style="background:${cc.color};">${cc.name}<br><small>${cc.loc}</small></div>`).join('');
                     rowHtml += `<td>${cellHtml}</td>`;
                 }
-                rowHtml += `</tr>`;
-                tbody.insertAdjacentHTML('beforeend', rowHtml);
+                tbody.insertAdjacentHTML('beforeend', rowHtml + `</tr>`);
             });
-
-            document.getElementById('timetableModal').classList.remove('hidden');
         }
 
-        function closeTimetable() { document.getElementById('timetableModal').classList.add('hidden'); }
-
         function downloadTimetableImage() {
-            const captureArea = document.getElementById('timetableCaptureArea');
-            html2canvas(captureArea, { scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `NCU_課表_${Date.now()}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
+            // 切換到課表模式以利截圖
+            if (currentCartView !== 'grid') setCartView('grid');
+            
+            // 延遲一點點確保畫面已切換完成
+            setTimeout(() => {
+                const captureArea = document.getElementById('timetableCaptureArea');
+                html2canvas(captureArea, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `NCU_課表_${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            }, 300);
         }
 
         document.querySelectorAll('#searchSection input, #searchSection select').forEach(el => el.addEventListener('input', filter));
