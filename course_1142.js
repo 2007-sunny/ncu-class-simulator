@@ -1225,6 +1225,46 @@ window.NCU_COURSES["1142"] = [
         "location": "TR-A002<br>TR-A002 (教研大樓-A002 )"
     },
     {
+        "id": "CL0201-D",
+        "name": "國文（B）：中文寫作",
+        "teacher": "李欣倫",
+        "credit": 2,
+        "time": "三 (10:00-11:50)",
+        "raw_time": [
+            "三34"
+        ],
+        "start_time": "10:00",
+        "sort_key": 310,
+        "location": "A-103"
+    },
+    {
+        "id": "LN1003-F",
+        "name": "大一英文:科學課群",
+        "teacher": "任秀英",
+        "credit": 3,
+        "time": "三 (15:00-16:50)<br>五 (09:00-09:50)",
+        "raw_time": [
+            "三78",
+            "五2"
+        ],
+        "start_time": "15:00",
+        "sort_key": 315,
+        "location": "TR-A003<br>E1-135"
+    },
+    {
+        "id": "PE1011-L",
+        "name": "大一體育",
+        "teacher": "黃相瑋",
+        "credit": 0,
+        "time": "一 (15:00-16:50)",
+        "raw_time": [
+            "一78"
+        ],
+        "start_time": "15:00",
+        "sort_key": 115,
+        "location": "YH-YH-1"
+    },
+    {
         "id": "MA1002-E",
         "name": "微積分",
         "teacher": "陳宣毅",
