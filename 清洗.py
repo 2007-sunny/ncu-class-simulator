@@ -2,7 +2,7 @@ import pandas as pd
 import json
 import re
 
-def clean_my_csv(file_path, semester="1142"):
+def clean_my_csv(file_path, semester="1141"):
     time_map = {
         '1': '08:00', '2': '09:00', '3': '10:00', '4': '11:00',
         'Z': '12:00', '5': '13:00', '6': '14:00', '7': '15:00',
@@ -14,6 +14,19 @@ def clean_my_csv(file_path, semester="1142"):
         '8': '16:50', 'A': '17:50', 'B': '18:50', 'C': '19:50'
     }
     day_map = {'一': 1, '二': 2, '三': 3, '四': 4, '五': 5, '六': 6, '日': 7}
+    day_alias_map = {
+        '一': '一', '二': '二', '三': '三', '四': '四', '五': '五', '六': '六', '日': '日',
+        'Mon': '一', 'Tue': '二', 'Wed': '三', 'Thu': '四', 'Fri': '五', 'Sat': '六', 'Sun': '日'
+    }
+    day_pattern = '|'.join(sorted(map(re.escape, day_alias_map.keys()), key=len, reverse=True))
+
+    def parse_time_part(time_part):
+        match = re.match(rf'^({day_pattern})([0-9A-Za-z]+)$', time_part)
+        if not match:
+            return None, ""
+        day = day_alias_map[match.group(1)]
+        periods = match.group(2).upper()
+        return day, periods
 
     try:
         df = pd.read_csv(file_path, skiprows=1, encoding="utf-8-sig").fillna("")
@@ -30,7 +43,7 @@ def clean_my_csv(file_path, semester="1142"):
             raw_tl = str(row[col_time_loc]).replace('\n', ' ').strip()
             
             # 使用正規表達式擷取所有時間與地點配對
-            pairs = re.findall(r'([一二三四五六日][0-9a-zA-Z]+)(?:/([^\s(]+))?', raw_tl)
+            pairs = re.findall(rf'(({day_pattern})[0-9A-Za-z]+)(?:/([^\s(]+))?', raw_tl)
             
             raw_times = []
             display_times = []
@@ -49,14 +62,14 @@ def clean_my_csv(file_path, semester="1142"):
                 desc_match = re.search(r'(\(.*\))', raw_tl)
                 detailed_desc = desc_match.group(1).strip() if desc_match else ""
                 
-                for time_part, loc_part in pairs:
+                for time_part, _, loc_part in pairs:
                     loc = loc_part.strip() if loc_part else "未定"
-                    raw_times.append(time_part)
                     locations.append(loc)
                     
-                    if len(time_part) > 1:
-                        day = time_part[0]
-                        periods = time_part[1:]
+                    day, periods = parse_time_part(time_part)
+                    if day and periods:
+                        normalized_time = f"{day}{periods}"
+                        raw_times.append(normalized_time)
                         start_times_list = [time_map.get(p, p) for p in periods if p in time_map]
                         end_times_list = [time_map_end.get(p, p) for p in periods if p in time_map_end]
                         if start_times_list and end_times_list:
@@ -65,9 +78,10 @@ def clean_my_csv(file_path, semester="1142"):
                             start_times.append(start_time)
                             sort_keys.append(day_map.get(day, 8) * 100 + int(start_time.split(':')[0]))
                         else:
-                            display_times.append(time_part)
+                            display_times.append(normalized_time)
                             sort_keys.append(9999)
                     else:
+                        raw_times.append(time_part)
                         display_times.append(time_part)
                         sort_keys.append(9999)
                         
@@ -104,9 +118,9 @@ window.NCU_COURSES["{semester}"] = {json.dumps(cleaned_list, ensure_ascii=False,
         with open(output_filename, "w", encoding="utf-8") as f:
             f.write(js_output)
             
-        print(f"✨ 成功！已產出 {output_filename}，採用高擴充性命名架構。")
+        print(f"成功！已產出 {output_filename}，採用高擴充性命名架構。")
 
-    except Exception as e: print(f"❌ 發生錯誤: {e}")
+    except Exception as e: print(f"發生錯誤: {e}")
 
 # 執行時可以指定學期
-clean_my_csv("中央課表1151.csv", semester="1151")
+clean_my_csv("dd.csv", semester="1150")
