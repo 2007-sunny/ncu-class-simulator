@@ -34,6 +34,9 @@
         
         .conflict-row { background-color: #ffebee !important; }
         .conflict-text { color: var(--ncu-red); font-weight: bold; font-size: 0.85rem; white-space: nowrap; }
+        .semester-row td { background: #eef2f7; color: var(--ncu-blue); font-weight: bold; border-top: 2px solid #d7e1ed; }
+        .semester-pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #e8f0fe; color: var(--ncu-blue); font-size: 0.75rem; margin-right: 6px; }
+        .muted { color: #777; font-size: 0.85rem; }
         
         .grad-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
         .grad-card { background: #fff; padding: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid var(--ncu-blue); }
@@ -78,7 +81,6 @@
             <select id="semesterSelect" onchange="changeSemester()" style="width: auto; padding: 4px;">
                 <option value="1151">115-1</option>
                 <option value="1142">114-2</option>
-                <option value="1141">114-1</option>
             </select>
         </span>
     </h2>
@@ -135,6 +137,11 @@
                 <div class="progress-text"><span id="txt-dept-comp">0/58</span> <span id="stat-dept-comp"></span></div>
             </div>
             <div class="grad-card">
+                <h4>通識/共同 (25)</h4>
+                <div class="progress-container"><div id="bar-common" class="progress-bar" style="background: #f57c00;"></div></div>
+                <div class="progress-text"><span id="txt-common">0/25</span> <span id="stat-common"></span></div>
+            </div>
+            <div class="grad-card">
                 <h4 id="label-dept-elec">系內選修 (15)</h4>
                 <div class="progress-container"><div id="bar-dept-elec" class="progress-bar" style="background: var(--ncu-green);"></div></div>
                 <div class="progress-text"><span id="txt-dept-elec">0/15</span> <span id="stat-dept-elec"></span></div>
@@ -153,7 +160,6 @@
                         <option value="1151">僅顯示 115-1</option>
                         <option value="all">顯示全部學期</option>
                         <option value="1142">僅顯示 114-2</option>
-                        <option value="1141">僅顯示 114-1</option>
                     </select>
                     <strong style="white-space: nowrap;">顯示學分：<span id="totalCredits" style="color: var(--ncu-red); font-size: 1.2rem;">0</span></strong>
                 </div>
@@ -209,7 +215,7 @@
     <script src="course_1141.js"></script>
     <script src="course_1142.js"></script>
     <script src="course_1151.js"></script>
-    
+
     <script>
         let currentSemester = "1151";
         let courses = [];
@@ -512,5 +518,6 @@
 
         document.querySelectorAll('#searchSection input, #searchSection select').forEach(el => el.addEventListener('input', filter));
     </script>
+    <script src="app.js"></script>
 </body>
 </html>
